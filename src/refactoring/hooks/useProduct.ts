@@ -5,12 +5,12 @@ export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
   const addProduct = (newProduct: Product[]) => {
-    setProducts((prev) => [...prev, newProduct]);
+    setProducts((prev: Product[]) => [...prev, newProduct]);
   };
 
   const updateProduct = (newProduct: Product) => {
-    setProducts((prev) =>
-      prev.map((product) => (product.name === newProduct.name ? { ...product } : { ...newProduct })),
+    setProducts((prev: Product[]) =>
+      prev.map((product: Product) => (product.id === newProduct.id ? { ...newProduct } : { ...product })),
     );
   };
 
