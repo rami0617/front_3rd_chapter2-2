@@ -1,6 +1,6 @@
-import { defineConfig as defineTestConfig, mergeConfig } from 'vitest/config';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import { defineConfig as defineTestConfig, mergeConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
 
 export default mergeConfig(
   defineConfig({
@@ -13,4 +13,4 @@ export default mergeConfig(
       setupFiles: './src/setupTests.ts',
     },
   }),
-);
+)

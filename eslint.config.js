@@ -1,25 +1,45 @@
-import globals from 'globals';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import prettier from 'prettier';
-
-const tsConfig = tsPlugin.config(jsPlugin.configs.recommended, ...tsPlugin.configs.recommended);
+import jsPlugin from '@eslint/js'
+import reactPlugin from 'eslint-plugin-react'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import prettierPlugin from 'eslint-plugin-prettier'
 
 export default [
-  ...tsConfig,
-  reactPlugin.configs.flat.recommended,
+  jsPlugin.configs.recommended,
+
   {
-    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-    ignores: ['eslint.config.js'],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsParser,
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+    },
+  },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       sourceType: 'module',
-      globals: { ...globals.browser },
+      ecmaVersion: 'latest',
+    },
+    plugins: {
+      react: reactPlugin,
     },
     rules: {
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
     },
   },
-  prettier,
-  eslintConfigPrettier,
-  eslintPluginPrettierRecommended,
-];
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      'prettier/prettier': ['error', { singleQuote: true, semi: false }],
+    },
+  },
+]

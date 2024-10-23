@@ -1,6 +1,3 @@
-import { useCart } from '../../hooks';
-import { calculateCartTotal } from '../../hooks/utils/cartUtils';
-
 interface CartSummaryProps {
   totalProductAmount: number;
   discountAmount: number;
