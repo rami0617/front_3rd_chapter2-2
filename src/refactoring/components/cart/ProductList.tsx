@@ -1,5 +1,4 @@
 import { CartItem, Product } from '../../../types';
-import { useCart } from '../../hooks/useCart';
 
 interface ProductListProps {
   products: Product[];
@@ -8,8 +7,6 @@ interface ProductListProps {
 }
 
 const ProductList = ({ products, cart, handleCart }: ProductListProps) => {
-  // const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon } = useCart();
-
   const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
