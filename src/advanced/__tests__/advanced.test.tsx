@@ -3,6 +3,12 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { Coupon, Product } from '../../types';
 import { AdminPage } from '../../refactoring/components/AdminPage';
+import {
+  addDiscountToProduct,
+  findProductId,
+  removeDiscountToProduct,
+  updateProductItem,
+} from '../../refactoring/utils';
 
 const mockProducts: Product[] = [
   {
@@ -202,9 +208,66 @@ describe('advanced > ', () => {
     });
   });
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('util 테스트 코드', () => {
+    const mockProduct = {
+      id: 'p1',
+      name: '상품1',
+      price: 10000,
+      stock: 20,
+      discounts: [{ quantity: 10, rate: 0.1 }],
+    };
+
+    test('util > discount > addDiscountToProduct', () => {
+      const mockProduct = {
+        id: 'p1',
+        name: '상품1',
+        price: 10000,
+        stock: 20,
+        discounts: [{ quantity: 10, rate: 0.1 }],
+      };
+
+      const mockDiscounts = { quantity: 20, rate: 0.2 };
+
+      expect(addDiscountToProduct(mockProduct, mockDiscounts)).toMatchObject({
+        id: 'p1',
+        name: '상품1',
+        price: 10000,
+        stock: 20,
+        discounts: [
+          { quantity: 10, rate: 0.1 },
+          { quantity: 20, rate: 0.2 },
+        ],
+      });
+    });
+
+    test('util > discount > removeDiscountToProduct', () => {
+      expect(removeDiscountToProduct(mockProduct, 0)).toMatchObject({
+        id: 'p1',
+        name: '상품1',
+        price: 10000,
+        stock: 20,
+        discounts: [],
+      });
+    });
+
+    test('util > product > findProductId', () => {
+      expect(findProductId(mockProducts, 'p1')).toMatchObject({
+        id: 'p1',
+        name: '상품1',
+        price: 10000,
+        stock: 20,
+        discounts: [{ quantity: 10, rate: 0.1 }],
+      });
+    });
+
+    test('util > product > updateProductItem', () => {
+      expect(updateProductItem(mockProduct, 'name', '맛있는 빵')).toMatchObject({
+        id: 'p1',
+        name: '맛있는 빵',
+        price: 10000,
+        stock: 20,
+        discounts: [{ quantity: 10, rate: 0.1 }],
+      });
     });
 
     test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
