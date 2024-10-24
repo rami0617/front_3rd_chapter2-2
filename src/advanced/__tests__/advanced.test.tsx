@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { Coupon, Product } from '../../types';
 import { AdminPage } from '../../refactoring/components/AdminPage';
@@ -9,6 +9,7 @@ import {
   removeDiscountToProduct,
   updateProductItem,
 } from '../../refactoring/utils';
+import { useAccordion, useCoupons, useProductItemUpdate } from '../../refactoring/hooks';
 
 const mockProducts: Product[] = [
   {
@@ -47,6 +48,14 @@ const mockCoupons: Coupon[] = [
     discountValue: 10,
   },
 ];
+
+const mockProduct: Product = {
+  id: 'p1',
+  name: '상품1',
+  price: 10000,
+  stock: 20,
+  discounts: [{ quantity: 10, rate: 0.1 }],
+};
 
 const TestCartPage = () => {
   return <CartPage coupons={mockCoupons} products={mockProducts} />;
@@ -209,14 +218,6 @@ describe('advanced > ', () => {
   });
 
   describe('util 테스트 코드', () => {
-    const mockProduct = {
-      id: 'p1',
-      name: '상품1',
-      price: 10000,
-      stock: 20,
-      discounts: [{ quantity: 10, rate: 0.1 }],
-    };
-
     test('util > discount > addDiscountToProduct', () => {
       const mockProduct = {
         id: 'p1',
@@ -269,9 +270,73 @@ describe('advanced > ', () => {
         discounts: [{ quantity: 10, rate: 0.1 }],
       });
     });
+  });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('커스텀훅 테스트 코드', () => {
+    test('hooks > useAccordian', () => {
+      const { result } = renderHook(() => useAccordion());
+
+      expect(result.current.openItems.size).toBe(0);
+
+      act(() => {
+        result.current.toggleItems('item1');
+      });
+
+      expect(result.current.openItems.has('item1')).toBe(true);
+
+      act(() => {
+        result.current.toggleItems('item1');
+      });
+
+      expect(result.current.openItems.has('item1')).toBe(false);
+    });
+
+    test('hooks > useCoupon', () => {
+      const { result } = renderHook(() => useCoupons(mockCoupons));
+
+      expect(result.current.coupons).toBe(mockCoupons);
+      expect(result.current.coupons.length).toBe(2);
+
+      act(() => {
+        result.current.addCoupon({
+          name: '50% 할인 쿠폰',
+          code: 'PERCENT50',
+          discountType: 'percentage',
+          discountValue: 50,
+        });
+      });
+
+      expect(result.current.coupons.length).toBe(3);
+    });
+
+    test('hooks > useCoupon', () => {
+      const { result } = renderHook(() => useCoupons(mockCoupons));
+
+      expect(result.current.coupons).toBe(mockCoupons);
+      expect(result.current.coupons.length).toBe(2);
+
+      act(() => {
+        result.current.addCoupon({
+          name: '50% 할인 쿠폰',
+          code: 'PERCENT50',
+          discountType: 'percentage',
+          discountValue: 50,
+        });
+      });
+
+      expect(result.current.coupons.length).toBe(3);
+    });
+
+    test('hooks > useProductItemUpdate', () => {
+      const { result } = renderHook(() => useProductItemUpdate(mockProduct, (mockProduct) => console.log(mockProduct)));
+
+      expect(result.current.productItem).toBe(mockProduct);
+
+      act(() => {
+        result.current.updateName('메롱');
+      });
+
+      expect(result.current.productItem?.name).toBe('메롱');
     });
   });
 });
