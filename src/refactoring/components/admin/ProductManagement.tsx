@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Discount, Product } from '../../../types';
+import { Product } from '../../../types';
+import { useAccordion, useDiscount, useProductItemUpdate } from '../../hooks';
 import TitleContainer from '../common/TitleContainer';
 import NewProductForm from '../product/NewProductForm';
 import ProductDetail from '../product/ProductDetail';
@@ -14,85 +15,16 @@ interface Props {
 }
 
 const ProductManagement = ({ products, updateProduct, addProduct }: Props) => {
-  const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
+  const [showNewProductForm, setShowNewProductForm] = useState<boolean>(false);
 
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
-
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
-
-  // 새로운 핸들러 함수 추가
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 새로운 핸들러 함수 추가
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 수정 완료 핸들러 함수 추가
-  const handleEditComplete = () => {
-    if (editingProduct) {
-      updateProduct(editingProduct);
-      setEditingProduct(null);
-    }
-  };
-
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      updateProduct(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
-
-  const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
-      };
-      updateProduct(newProduct);
-      setEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
-  };
-
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    console.log(productId, index);
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      updateProduct(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
+  const { productItem, updateName, updatePrice, updateStock, setProductItem, selectEditProduct, completeEditProduct } =
+    useProductItemUpdate(null, updateProduct);
+  const { openItems, toggleItems } = useAccordion();
+  const { newDiscount, setNewDiscount, addDiscount, removeDiscount } = useDiscount(
+    products,
+    updateProduct,
+    setProductItem,
+  );
 
   return (
     <div>
@@ -109,26 +41,26 @@ const ProductManagement = ({ products, updateProduct, addProduct }: Props) => {
               name={product.name}
               price={product.price}
               stock={product.stock}
-              handleButtonClick={() => toggleProductAccordion(product.id)}
+              handleButtonClick={() => toggleItems(product.id)}
             />
-            {openProductIds.has(product.id) && (
+            {openItems.has(product.id) && (
               <div className="mt-2">
-                {editingProduct && editingProduct.id === product.id ? (
+                {productItem && productItem.id === product.id ? (
                   <ProductEditForm
-                    editingProduct={editingProduct}
+                    editingProduct={productItem}
                     newDiscount={newDiscount}
-                    handleProductNameUpdate={(name: string) => handleProductNameUpdate(product.id, name)}
-                    handlePriceUpdate={(price: number) => handlePriceUpdate(product.id, price)}
-                    handleStockUpdate={(stock: number) => handleStockUpdate(product.id, stock)}
-                    handleRemoveDiscount={() => handleRemoveDiscount(product.id, index)}
-                    handleAddDiscount={() => handleAddDiscount(product.id)}
-                    handleEditComplete={() => handleEditComplete()}
+                    handleProductNameUpdate={(name: string) => updateName(name)}
+                    handlePriceUpdate={(price: number) => updatePrice(price)}
+                    handleStockUpdate={(stock: number) => updateStock(stock)}
+                    handleRemoveDiscount={() => removeDiscount(product.id, index)}
+                    handleAddDiscount={() => addDiscount(product.id)}
+                    handleEditComplete={() => completeEditProduct()}
                     handleDiscount={(discount) => setNewDiscount({ ...discount })}
                   />
                 ) : (
                   <ProductDetail
                     discounts={product.discounts}
-                    handleEditButtonClick={() => handleEditProduct(product)}
+                    handleEditButtonClick={() => selectEditProduct(product)}
                   />
                 )}
               </div>

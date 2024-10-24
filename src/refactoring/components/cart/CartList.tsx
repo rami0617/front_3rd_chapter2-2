@@ -26,7 +26,6 @@ const CartList = ({ cart, handleUpdateQuantity, handleRemoveFromCart }: CartList
   return (
     <div>
       <TitleContainer title="장바구니 내역" />
-
       <div className="space-y-2">
         {cart.map((item) => {
           const appliedDiscount = getAppliedDiscount(item);
