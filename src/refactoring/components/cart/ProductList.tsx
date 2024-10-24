@@ -1,4 +1,5 @@
 import { CartItem, Product } from '../../../types';
+import TitleContainer from '../common/TitleContainer';
 
 interface ProductListProps {
   products: Product[];
@@ -18,7 +19,7 @@ const ProductList = ({ products, cart, handleCart }: ProductListProps) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
+      <TitleContainer title="상품 목록" />
       <div className="space-y-2">
         {products.map((product) => {
           const remainingStock = getRemainingStock(product);

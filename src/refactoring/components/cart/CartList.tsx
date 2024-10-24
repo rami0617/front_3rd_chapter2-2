@@ -1,4 +1,5 @@
 import { CartItem } from '../../../types';
+import TitleContainer from '../common/TitleContainer';
 
 interface CartListProps {
   cart: CartItem[];
@@ -24,7 +25,7 @@ const CartList = ({ cart, handleUpdateQuantity, handleRemoveFromCart }: CartList
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
+      <TitleContainer title="장바구니 내역" />
 
       <div className="space-y-2">
         {cart.map((item) => {

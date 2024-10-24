@@ -1,4 +1,5 @@
 import { Coupon } from '../../../types';
+import TitleContainer from '../common/TitleContainer';
 
 interface CouponSectionProps {
   coupons: Coupon[];
@@ -9,7 +10,7 @@ interface CouponSectionProps {
 const CouponSection = ({ coupons, selectedCoupon, handleApplyCoupon }: CouponSectionProps) => {
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
-      <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
+      <TitleContainer className="mb-2" title="쿠폰 적용" />
       <select
         onChange={(e) => handleApplyCoupon(coupons[parseInt(e.target.value)])}
         className="w-full p-2 border rounded mb-2"
