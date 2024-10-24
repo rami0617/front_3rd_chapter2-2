@@ -2,12 +2,12 @@ import { CartItem, Product } from '../../../types';
 import TitleContainer from '../common/TitleContainer';
 
 interface ProductListProps {
-  products: Product[];
   cart: CartItem[];
   handleCart: (product: Product) => void;
+  products: Product[];
 }
 
-const ProductList = ({ products, cart, handleCart }: ProductListProps) => {
+const ProductList = ({ cart, handleCart, products }: ProductListProps) => {
   const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };

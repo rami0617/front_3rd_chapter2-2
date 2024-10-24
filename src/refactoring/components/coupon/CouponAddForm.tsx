@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Coupon } from '../../../types';
 
 interface Props {
-  onCouponAdd: (coupon: Coupon) => void;
+  addCoupon: (coupon: Coupon) => void;
 }
 
-const CouponAddForm = ({ onCouponAdd }: Props) => {
+const CouponAddForm = ({ addCoupon }: Props) => {
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: '',
     code: '',
@@ -14,7 +14,7 @@ const CouponAddForm = ({ onCouponAdd }: Props) => {
   });
 
   const handleAddCoupon = () => {
-    onCouponAdd(newCoupon);
+    addCoupon(newCoupon);
     setNewCoupon({
       name: '',
       code: '',

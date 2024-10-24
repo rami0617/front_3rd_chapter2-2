@@ -5,15 +5,15 @@ import CurrentCouponList from '../coupon/CurrentCouponList';
 
 interface Props {
   coupons: Coupon[];
-  onCouponAdd: (coupon: Coupon) => void;
+  addCoupon: (coupon: Coupon) => void;
 }
 
-const CouponManagement = ({ coupons, onCouponAdd }: Props) => {
+const CouponManagement = ({ coupons, addCoupon }: Props) => {
   return (
     <div>
       <TitleContainer title="쿠폰 관리" />
       <div className="bg-white p-4 rounded shadow">
-        <CouponAddForm onCouponAdd={onCouponAdd} />
+        <CouponAddForm addCoupon={addCoupon} />
         <CurrentCouponList coupons={coupons} />
       </div>
     </div>

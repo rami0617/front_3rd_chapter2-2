@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Product } from '../../../types';
 
 interface Props {
-  onProductAdd: (product: Product) => void;
   setShowNewProductForm: (showNewProductform: boolean) => void;
+  onProductAdd: (newProduct: Product) => void;
 }
 
-const NewProductForm = ({ onProductAdd, setShowNewProductForm }: Props) => {
+const NewProductForm = ({ setShowNewProductForm, onProductAdd }: Props) => {
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
     name: '',
     price: 0,
@@ -65,7 +65,10 @@ const NewProductForm = ({ onProductAdd, setShowNewProductForm }: Props) => {
           className="w-full p-2 border rounded"
         />
       </div>
-      <button onClick={handleAddNewProduct} className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+      <button
+        onClick={() => handleAddNewProduct()}
+        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+      >
         추가
       </button>
     </div>

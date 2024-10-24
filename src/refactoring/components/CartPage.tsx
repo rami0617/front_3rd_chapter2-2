@@ -12,7 +12,6 @@ interface Props {
 
 export const CartPage = ({ products, coupons }: Props) => {
   const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon } = useCart();
-
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
 
   return (
@@ -20,13 +19,11 @@ export const CartPage = ({ products, coupons }: Props) => {
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <ProductList products={products} cart={cart} handleCart={addToCart} />
+          <ProductList cart={cart} handleCart={addToCart} products={products} />
         </div>
         <div>
           <CartList cart={cart} handleUpdateQuantity={updateQuantity} handleRemoveFromCart={removeFromCart} />
-
-          <CouponSection coupons={coupons} selectedCoupon={selectedCoupon} handleApplyCoupon={applyCoupon} />
-
+          <CouponSection selectedCoupon={selectedCoupon} handleApplyCoupon={applyCoupon} coupons={coupons} />
           <CartSummary
             totalProductAmount={totalBeforeDiscount}
             totalAmount={totalAfterDiscount}

@@ -7,7 +7,7 @@ interface CouponSectionProps {
   handleApplyCoupon: (coupon: Coupon) => void;
 }
 
-const CouponSection = ({ coupons, selectedCoupon, handleApplyCoupon }: CouponSectionProps) => {
+const CouponSection = ({ selectedCoupon, handleApplyCoupon, coupons }: CouponSectionProps) => {
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <TitleContainer className="mb-2" title="쿠폰 적용" />

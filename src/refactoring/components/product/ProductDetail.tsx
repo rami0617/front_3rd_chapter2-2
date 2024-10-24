@@ -8,7 +8,7 @@ interface Props {
 const ProductDetail = ({ discounts, handleEditButtonClick }: Props) => {
   return (
     <div>
-      {discounts?.map((discount, index) => (
+      {discounts.map((discount, index) => (
         <div key={index} className="mb-2">
           <span>
             {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인

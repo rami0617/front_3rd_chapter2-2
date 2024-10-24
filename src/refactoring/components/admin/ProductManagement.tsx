@@ -7,13 +7,13 @@ import ProductEditForm from '../product/ProductEditForm';
 import ProductManagementButton from '../product/ProductManagementButton';
 import ProductToggleButton from '../product/ProductToggleButton';
 
-interface ProductManagementProps {
-  onProductAdd: (newProduct: Product) => void;
+interface Props {
   products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
+  updateProduct: (product: Product) => void;
+  addProduct: (product: Product) => void;
 }
 
-const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductManagementProps) => {
+const ProductManagement = ({ products, updateProduct, addProduct }: Props) => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -54,7 +54,7 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
   // 수정 완료 핸들러 함수 추가
   const handleEditComplete = () => {
     if (editingProduct) {
-      onProductUpdate(editingProduct);
+      updateProduct(editingProduct);
       setEditingProduct(null);
     }
   };
@@ -63,7 +63,7 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct) {
       const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       setEditingProduct(newProduct);
     }
   };
@@ -75,20 +75,21 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
         ...updatedProduct,
         discounts: [...updatedProduct.discounts, newDiscount],
       };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       setEditingProduct(newProduct);
       setNewDiscount({ quantity: 0, rate: 0 });
     }
   };
 
   const handleRemoveDiscount = (productId: string, index: number) => {
+    console.log(productId, index);
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct) {
       const newProduct = {
         ...updatedProduct,
         discounts: updatedProduct.discounts.filter((_, i) => i !== index),
       };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       setEditingProduct(newProduct);
     }
   };
@@ -100,9 +101,7 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
         handleClickButton={() => setShowNewProductForm(!showNewProductForm)}
         showNewProductForm={showNewProductForm}
       />
-      {showNewProductForm && (
-        <NewProductForm onProductAdd={onProductAdd} setShowNewProductForm={setShowNewProductForm} />
-      )}
+      {showNewProductForm && <NewProductForm setShowNewProductForm={setShowNewProductForm} onProductAdd={addProduct} />}
       <div className="space-y-2">
         {products.map((product, index) => (
           <div key={product.id} data-testid={`product-${index + 1}`} className="bg-white p-4 rounded shadow">
@@ -114,12 +113,7 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
             />
             {openProductIds.has(product.id) && (
               <div className="mt-2">
-                {!editingProduct || editingProduct.id !== product.id ? (
-                  <ProductDetail
-                    discounts={product.discounts}
-                    handleEditButtonClick={() => handleEditProduct(product)}
-                  />
-                ) : (
+                {editingProduct && editingProduct.id === product.id ? (
                   <ProductEditForm
                     editingProduct={editingProduct}
                     newDiscount={newDiscount}
@@ -130,6 +124,11 @@ const ProductManagement = ({ onProductAdd, products, onProductUpdate }: ProductM
                     handleAddDiscount={() => handleAddDiscount(product.id)}
                     handleEditComplete={() => handleEditComplete()}
                     handleDiscount={(discount) => setNewDiscount({ ...discount })}
+                  />
+                ) : (
+                  <ProductDetail
+                    discounts={product.discounts}
+                    handleEditButtonClick={() => handleEditProduct(product)}
                   />
                 )}
               </div>
