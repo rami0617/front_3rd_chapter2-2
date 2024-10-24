@@ -4,6 +4,7 @@ import CartList from './cart/CartList';
 import CartSummary from './cart/CartSummary';
 import CouponSection from './cart/CouponSection';
 import ProductList from './cart/ProductList';
+import PageTitle from './common/PageTitle';
 
 interface Props {
   products: Product[];
@@ -16,7 +17,7 @@ export const CartPage = ({ products, coupons }: Props) => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">장바구니</h1>
+      <PageTitle title="장바구니" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <ProductList cart={cart} handleCart={addToCart} products={products} />
