@@ -19,4 +19,9 @@
 
 4. 기존에 나눠져 있는 컴포넌트들을 다시 살펴보니 관심사에 따라 더 나눌 수 있을 것이라는 생각이 들었다. 다시 분리 작업시작.
    1. admin, cart, coupon에 동일하게 타이틀 부분이 같은 style을 사용하고 있어 하나의 컴포넌트로 묶어줌(TitleContainer)
-5.
+5. 나누다보니 크게 user, coupon, product 3개의 entity로 나눌 수 있게 되었다.
+   1. 결국 cart에 있는 것들도 product, coupon으로 나눌 수 있다.
+6. props drilling이 3번 이상 일어나는 일이 빈번해져 중앙에서 상태관리를 해 줄 수 있는 뭔가가 필요해졌다.
+7. 디펜던시 추가 없이 상태관리를 할 수 있는 contenxt api를 사용하기로 했다.
+8. refactoring > context 폴더를 만들어 context provider들을 정의해주었다.
+9.
