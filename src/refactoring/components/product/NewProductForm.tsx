@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Product } from '../../../types';
+import { useNewProudct } from '../../hooks';
 
 interface Props {
   setShowNewProductForm: (showNewProductform: boolean) => void;
@@ -7,24 +7,7 @@ interface Props {
 }
 
 const NewProductForm = ({ setShowNewProductForm, onProductAdd }: Props) => {
-  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
-    name: '',
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
-
-  const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: '',
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
-  };
+  const { newProduct, setNewProduct, addNewProduct } = useNewProudct(onProductAdd, setShowNewProductForm);
 
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
@@ -65,10 +48,7 @@ const NewProductForm = ({ setShowNewProductForm, onProductAdd }: Props) => {
           className="w-full p-2 border rounded"
         />
       </div>
-      <button
-        onClick={() => handleAddNewProduct()}
-        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-      >
+      <button onClick={() => addNewProduct()} className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
         추가
       </button>
     </div>

@@ -1,4 +1,5 @@
 import { CartItem, Product } from '../../../types';
+import { getMaxDiscount, getRemainingStock } from '../../utils';
 import TitleContainer from '../common/TitleContainer';
 
 interface ProductListProps {
@@ -8,21 +9,13 @@ interface ProductListProps {
 }
 
 const ProductList = ({ cart, handleCart, products }: ProductListProps) => {
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
   return (
     <div>
       <TitleContainer title="상품 목록" />
       <div className="space-y-2">
         {products.map((product) => {
-          const remainingStock = getRemainingStock(product);
+          const cartItem = cart.find((item) => item.product.id === product.id);
+          const remainingStock = getRemainingStock(product, cartItem?.quantity ?? 0);
 
           return (
             <div key={product.id} data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">

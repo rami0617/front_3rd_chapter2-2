@@ -41,7 +41,6 @@ export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | nu
   }
 
   const totalDiscount = Math.floor(totalBeforeDiscount - totalAfterDiscount);
-  console.log(totalBeforeDiscount, totalAfterDiscount);
 
   return {
     totalBeforeDiscount,
@@ -58,4 +57,19 @@ export const updateCartItemQuantity = (cart: CartItem[], productId: string, newQ
   return cart.map((item) =>
     item.product.id === productId ? { ...item, quantity: Math.min(newQuantity, item.product.stock) } : item,
   );
+};
+
+export const getAppliedDiscount = (item: CartItem) => {
+  const { discounts } = item.product;
+  const { quantity } = item;
+
+  let appliedDiscount = 0;
+
+  for (const discount of discounts) {
+    if (quantity >= discount.quantity) {
+      appliedDiscount = Math.max(appliedDiscount, discount.rate);
+    }
+  }
+
+  return appliedDiscount;
 };

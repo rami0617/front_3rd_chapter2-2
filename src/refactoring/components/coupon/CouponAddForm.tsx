@@ -1,27 +1,12 @@
-import { useState } from 'react';
 import { Coupon } from '../../../types';
+import { useNewCoupon } from '../../hooks';
 
 interface Props {
   addCoupon: (coupon: Coupon) => void;
 }
 
 const CouponAddForm = ({ addCoupon }: Props) => {
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: '',
-    code: '',
-    discountType: 'percentage',
-    discountValue: 0,
-  });
-
-  const handleAddCoupon = () => {
-    addCoupon(newCoupon);
-    setNewCoupon({
-      name: '',
-      code: '',
-      discountType: 'percentage',
-      discountValue: 0,
-    });
-  };
+  const { newCoupon, setNewCoupon, addNewCoupon } = useNewCoupon(addCoupon);
 
   return (
     <div className="space-y-2 mb-4">
@@ -56,7 +41,7 @@ const CouponAddForm = ({ addCoupon }: Props) => {
           className="w-full p-2 border rounded"
         />
       </div>
-      <button onClick={handleAddCoupon} className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
+      <button onClick={addNewCoupon} className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
         쿠폰 추가
       </button>
     </div>
