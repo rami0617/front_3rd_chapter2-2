@@ -1,5 +1,5 @@
 import { Coupon } from '../../../types';
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 
 interface CouponSectionProps {
   coupons: Coupon[];

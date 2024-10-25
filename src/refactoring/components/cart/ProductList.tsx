@@ -1,6 +1,6 @@
 import { CartItem, Product } from '../../../types';
 import { getMaxDiscount, getRemainingStock } from '../../utils';
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 
 interface ProductListProps {
   cart: CartItem[];

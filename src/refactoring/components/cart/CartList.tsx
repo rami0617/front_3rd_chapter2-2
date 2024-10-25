@@ -1,6 +1,6 @@
 import { CartItem } from '../../../types';
 import { getAppliedDiscount } from '../../utils';
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 
 interface CartListProps {
   cart: CartItem[];

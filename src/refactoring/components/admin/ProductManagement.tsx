@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Product } from '../../../types';
 import { useAccordion, useDiscount, useProductItemUpdate } from '../../hooks';
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 import NewProductForm from '../product/NewProductForm';
 import ProductDetail from '../product/ProductDetail';
 import ProductEditForm from '../product/ProductEditForm';

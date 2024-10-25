@@ -1,4 +1,4 @@
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 
 interface CartSummaryProps {
   totalProductAmount: number;

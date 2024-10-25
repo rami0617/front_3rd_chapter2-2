@@ -1,5 +1,5 @@
 import { Coupon } from '../../../types';
-import TitleContainer from '../common/TitleContainer';
+import TitleContainer from '../common/Subtitle';
 import CouponAddForm from '../coupon/CouponAddForm';
 import CurrentCouponList from '../coupon/CurrentCouponList';
 
